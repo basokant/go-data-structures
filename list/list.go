@@ -9,6 +9,6 @@ type List[T comparable] interface {
 	Append(data T) error
 	Delete(node *Node[T]) error
 	Search(data T) (*Node[T], error)
-	ToArray() []T
-	ToString() string
+	Array() []T
+	String() string
 }

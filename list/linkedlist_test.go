@@ -7,7 +7,7 @@ import (
 
 func TestNewLinkedListFromArray(t *testing.T) {
 	list := NewLinkedListFromArray([]int{1, 2, 3, 4})
-	fmt.Print(list.ToString())
+	fmt.Print(list.String())
 }
 
 func TestLinkedListPrepend(t *testing.T) {

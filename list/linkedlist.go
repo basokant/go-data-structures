@@ -94,7 +94,7 @@ func (list LinkedList[T]) Search(data T) (*Node[T], error) {
 	return nil, errors.New("node with data was not found in the List")
 }
 
-func (list LinkedList[T]) ToArray() []T {
+func (list LinkedList[T]) Array() []T {
 	arr := []T{}
 	current := list.head
 
@@ -106,8 +106,8 @@ func (list LinkedList[T]) ToArray() []T {
 	return arr
 }
 
-func (list LinkedList[T]) ToString() string {
-	return fmt.Sprint(list.ToArray())
+func (list LinkedList[T]) String() string {
+	return fmt.Sprint(list.Array())
 }
 
 func NewLinkedList[T comparable]() List[T] {
