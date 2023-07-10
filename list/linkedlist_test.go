@@ -2,6 +2,10 @@ package list
 
 import "testing"
 
+func TestNewLinkedListFromArray(t *testing.T) {
+
+}
+
 func TestLinkedListPrepend(t *testing.T) {
 
 }
