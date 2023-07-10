@@ -16,8 +16,8 @@ type SinglyLinkedNode[T comparable] struct {
 type DoublyLinkedNode[T comparable] struct {
 	Node[T]
 	Data     T
-	next     *SinglyLinkedNode[T]
-	previous *SinglyLinkedNode[T]
+	next     *DoublyLinkedNode[T]
+	previous *DoublyLinkedNode[T]
 }
 
 func (node SinglyLinkedNode[T]) String() string {

@@ -7,8 +7,8 @@ import (
 
 type DoublyLinkedList[T comparable] struct {
 	length int
-	head   *SinglyLinkedNode[T]
-	tail   *SinglyLinkedNode[T]
+	head   *DoublyLinkedNode[T]
+	tail   *DoublyLinkedNode[T]
 }
 
 func (list *DoublyLinkedList[T]) Prepend(data T) error {
@@ -16,7 +16,7 @@ func (list *DoublyLinkedList[T]) Prepend(data T) error {
 		return errors.New("cannot prepend new node on nil list")
 	}
 
-	newNode := &SinglyLinkedNode[T]{
+	newNode := &DoublyLinkedNode[T]{
 		Data: T(data),
 	}
 
@@ -38,7 +38,7 @@ func (list *DoublyLinkedList[T]) Append(data T) error {
 		return errors.New("cannot prepend new node on nil list")
 	}
 
-	newNode := &SinglyLinkedNode[T]{
+	newNode := &DoublyLinkedNode[T]{
 		Data: T(data),
 	}
 
@@ -54,14 +54,36 @@ func (list *DoublyLinkedList[T]) Append(data T) error {
 	return nil
 }
 
-func (list *DoublyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) error {
+func (list *DoublyLinkedList[T]) Delete(node *DoublyLinkedNode[T]) (T, error) {
+	var data T
 	if list == nil {
-		return errors.New("cannot delete from a nil list")
+		return data, errors.New("cannot delete from a nil list")
+	}
+
+	if list.length == 1 {
+		data = list.head.Data
+		list.head = nil
+		list.tail = nil
+		return data, nil
 	}
 
 	if list.head == node {
+		data = list.head.Data
 		list.head = list.head.next
-		return nil
+		return data, nil
+	}
+
+	if list.tail == node {
+		data = list.tail.Data
+		current := list.head
+
+		for current != nil && current.next != list.tail {
+			current = current.next
+		}
+
+		current.next = nil
+		list.tail = current
+		return data, nil
 	}
 
 	previous := list.head
@@ -70,8 +92,9 @@ func (list *DoublyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) error {
 	for current != nil {
 		if current == node {
 			// node is found: delete it
+			data = current.Data
 			previous.next = current.next
-			return nil
+			return data, nil
 		}
 
 		// node was not found, traverse to the next node
@@ -79,10 +102,10 @@ func (list *DoublyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) error {
 		current = current.next
 	}
 
-	return errors.New("node with data was not found in the List")
+	return data, errors.New("node with data was not found in the List")
 }
 
-func (list DoublyLinkedList[T]) Search(data T) (*SinglyLinkedNode[T], error) {
+func (list DoublyLinkedList[T]) Search(data T) (*DoublyLinkedNode[T], error) {
 	current := list.head
 
 	for current != nil {

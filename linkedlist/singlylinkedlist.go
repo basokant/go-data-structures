@@ -5,13 +5,13 @@ import (
 	"fmt"
 )
 
-type LinkedList[T comparable] struct {
+type SinglyLinkedList[T comparable] struct {
 	length int
 	head   *SinglyLinkedNode[T]
 	tail   *SinglyLinkedNode[T]
 }
 
-func (list *LinkedList[T]) Prepend(data T) error {
+func (list *SinglyLinkedList[T]) Prepend(data T) error {
 	if list == nil {
 		return errors.New("cannot prepend new node on nil list")
 	}
@@ -33,7 +33,7 @@ func (list *LinkedList[T]) Prepend(data T) error {
 	return nil
 }
 
-func (list *LinkedList[T]) Append(data T) error {
+func (list *SinglyLinkedList[T]) Append(data T) error {
 	if list == nil {
 		return errors.New("cannot prepend new node on nil list")
 	}
@@ -54,7 +54,7 @@ func (list *LinkedList[T]) Append(data T) error {
 	return nil
 }
 
-func (list *LinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
+func (list *SinglyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
 	var data T
 	if list == nil {
 		return data, errors.New("cannot delete from a nil list")
@@ -105,7 +105,7 @@ func (list *LinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
 	return data, errors.New("node with data was not found in the List")
 }
 
-func (list LinkedList[T]) Search(data T) (*SinglyLinkedNode[T], error) {
+func (list SinglyLinkedList[T]) Search(data T) (*SinglyLinkedNode[T], error) {
 	current := list.head
 
 	for current != nil {
@@ -117,7 +117,7 @@ func (list LinkedList[T]) Search(data T) (*SinglyLinkedNode[T], error) {
 	return nil, errors.New("node with data was not found in the List")
 }
 
-func (list LinkedList[T]) Array() []T {
+func (list SinglyLinkedList[T]) Array() []T {
 	arr := []T{}
 	current := list.head
 
@@ -129,19 +129,19 @@ func (list LinkedList[T]) Array() []T {
 	return arr
 }
 
-func (list LinkedList[T]) String() string {
+func (list SinglyLinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
 }
 
 func NewLinkedList[T comparable]() Lister[T] {
-	return &LinkedList[T]{
+	return &SinglyLinkedList[T]{
 		length: 0,
 		head:   &SinglyLinkedNode[T]{},
 	}
 }
 
-func NewLinkedListFromArray[T comparable](arr []T) *LinkedList[T] {
-	list := &LinkedList[T]{}
+func NewLinkedListFromArray[T comparable](arr []T) *SinglyLinkedList[T] {
+	list := &SinglyLinkedList[T]{}
 	for _, data := range arr {
 		list.Append(data)
 	}
