@@ -59,12 +59,73 @@ func TestLinkedListPrepend(t *testing.T) {
 }
 
 func TestLinkedListAppend(t *testing.T) {
+	got := NewLinkedList[int]()
+
+	got.Append(1)
+	got.Append(2)
+	got.Append(3)
+	got.Append(4)
+
+	want := NewLinkedListFromArray([]int{1, 2, 3, 4})
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
+
+	got.Append(5)
+	want = NewLinkedListFromArray([]int{1, 2, 3, 4, 5})
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
 }
 
 func TestLinkedListDelete(t *testing.T) {
+	node := &Node[int]{}
 
+	empty_list := NewLinkedList[int]()
+	err := empty_list.Delete(node)
+
+	if err == nil {
+		t.Errorf("deleting from an empty list %q did not error", empty_list)
+	}
+
+	got := NewLinkedListFromArray([]int{1, 2, 3, 4, 5})
+	got.Delete(got.head)
+
+	want := NewLinkedListFromArray([]int{2, 3, 4, 5})
+
+	if got.String() != want.String() {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
+
+	err = got.Delete(node)
+
+	if err == nil {
+		t.Errorf("deleting node %q that is not in the list %q did not error", node, got)
+	}
 }
 
 func TestLinkedListSearch(t *testing.T) {
+	empty_list := NewLinkedList[int]()
+	_, err := empty_list.Search(5)
 
+	if err == nil {
+		t.Errorf("searching from an empty list %q did not error", empty_list)
+	}
+
+	list := NewLinkedListFromArray([]int{1, 2, 3, 4, 5})
+	got, err := list.Search(3)
+
+	want := list.head.next.next
+
+	if err != nil || !reflect.DeepEqual(want, got) {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
+
+	_, err = list.Search(6)
+
+	if err == nil {
+		t.Errorf("searching for value %q that is not in the list %q did not error", 6, list)
+	}
 }

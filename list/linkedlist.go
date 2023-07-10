@@ -117,7 +117,7 @@ func NewLinkedList[T comparable]() Lister[T] {
 	}
 }
 
-func NewLinkedListFromArray[T comparable](arr []T) Lister[T] {
+func NewLinkedListFromArray[T comparable](arr []T) *LinkedList[T] {
 	list := &LinkedList[T]{}
 	for _, data := range arr {
 		list.Append(data)
