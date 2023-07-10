@@ -37,11 +37,28 @@ func TestNewLinkedListFromArray(t *testing.T) {
 }
 
 func TestLinkedListPrepend(t *testing.T) {
+	got := NewLinkedList[int]()
 
+	got.Prepend(1)
+	got.Prepend(2)
+	got.Prepend(3)
+	got.Prepend(4)
+
+	want := NewLinkedListFromArray([]int{4, 3, 2, 1})
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
+
+	got.Prepend(5)
+	want = NewLinkedListFromArray([]int{5, 4, 3, 2, 1})
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
 }
 
 func TestLinkedListAppend(t *testing.T) {
-
 }
 
 func TestLinkedListDelete(t *testing.T) {
