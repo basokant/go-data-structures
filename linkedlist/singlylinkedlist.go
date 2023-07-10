@@ -7,8 +7,8 @@ import (
 
 type LinkedList[T comparable] struct {
 	length int
-	head   *Node[T]
-	tail   *Node[T]
+	head   *SinglyLinkedNode[T]
+	tail   *SinglyLinkedNode[T]
 }
 
 func (list *LinkedList[T]) Prepend(data T) error {
@@ -16,7 +16,7 @@ func (list *LinkedList[T]) Prepend(data T) error {
 		return errors.New("cannot prepend new node on nil list")
 	}
 
-	newNode := &Node[T]{
+	newNode := &SinglyLinkedNode[T]{
 		Data: T(data),
 	}
 
@@ -38,7 +38,7 @@ func (list *LinkedList[T]) Append(data T) error {
 		return errors.New("cannot prepend new node on nil list")
 	}
 
-	newNode := &Node[T]{
+	newNode := &SinglyLinkedNode[T]{
 		Data: T(data),
 	}
 
@@ -54,14 +54,36 @@ func (list *LinkedList[T]) Append(data T) error {
 	return nil
 }
 
-func (list *LinkedList[T]) Delete(node *Node[T]) error {
+func (list *LinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
+	var data T
 	if list == nil {
-		return errors.New("cannot delete from a nil list")
+		return data, errors.New("cannot delete from a nil list")
+	}
+
+	if list.length == 1 {
+		data = list.head.Data
+		list.head = nil
+		list.tail = nil
+		return data, nil
 	}
 
 	if list.head == node {
+		data = list.head.Data
 		list.head = list.head.next
-		return nil
+		return data, nil
+	}
+
+	if list.tail == node {
+		data = list.tail.Data
+		current := list.head
+
+		for current != nil && current.next != list.tail {
+			current = current.next
+		}
+
+		current.next = nil
+		list.tail = current
+		return data, nil
 	}
 
 	previous := list.head
@@ -70,8 +92,9 @@ func (list *LinkedList[T]) Delete(node *Node[T]) error {
 	for current != nil {
 		if current == node {
 			// node is found: delete it
+			data = current.Data
 			previous.next = current.next
-			return nil
+			return data, nil
 		}
 
 		// node was not found, traverse to the next node
@@ -79,10 +102,10 @@ func (list *LinkedList[T]) Delete(node *Node[T]) error {
 		current = current.next
 	}
 
-	return errors.New("node with data was not found in the List")
+	return data, errors.New("node with data was not found in the List")
 }
 
-func (list LinkedList[T]) Search(data T) (*Node[T], error) {
+func (list LinkedList[T]) Search(data T) (*SinglyLinkedNode[T], error) {
 	current := list.head
 
 	for current != nil {
@@ -113,7 +136,7 @@ func (list LinkedList[T]) String() string {
 func NewLinkedList[T comparable]() Lister[T] {
 	return &LinkedList[T]{
 		length: 0,
-		head:   &Node[T]{},
+		head:   &SinglyLinkedNode[T]{},
 	}
 }
 

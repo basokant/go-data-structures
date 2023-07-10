@@ -81,25 +81,25 @@ func TestLinkedListAppend(t *testing.T) {
 }
 
 func TestLinkedListDelete(t *testing.T) {
-	node := &Node[int]{}
+	node := &SinglyLinkedNode[int]{}
 
 	empty_list := NewLinkedList[int]()
-	err := empty_list.Delete(node)
+	_, err := empty_list.Delete(node)
 
 	if err == nil {
 		t.Errorf("deleting from an empty list %q did not error", empty_list)
 	}
 
 	got := NewLinkedListFromArray([]int{1, 2, 3, 4, 5})
-	got.Delete(got.head)
+	data, err := got.Delete(got.head)
 
 	want := NewLinkedListFromArray([]int{2, 3, 4, 5})
 
-	if got.String() != want.String() {
+	if err != nil || data != 1 || got.String() != want.String() {
 		t.Errorf("got %q, wanted %q", got, want)
 	}
 
-	err = got.Delete(node)
+	_, err = got.Delete(node)
 
 	if err == nil {
 		t.Errorf("deleting node %q that is not in the list %q did not error", node, got)
