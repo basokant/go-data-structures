@@ -3,7 +3,6 @@ package list
 import "fmt"
 
 type Node[T comparable] interface {
-	Data() (T, error)
 	String() (string, error)
 }
 
@@ -31,8 +30,8 @@ func (node DoublyLinkedNode[T]) String() string {
 type Lister[T comparable] interface {
 	Prepend(data T) error
 	Append(data T) error
-	Delete(node *SinglyLinkedNode[T]) (T, error)
-	Search(data T) (*SinglyLinkedNode[T], error)
+	// Delete(node *Node[T]) (T, error)
+	// Search(data T) (*Node[T], error)
 	Array() []T
 	String() string
 }

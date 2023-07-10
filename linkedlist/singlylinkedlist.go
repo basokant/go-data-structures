@@ -133,7 +133,7 @@ func (list SinglyLinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
 }
 
-func NewLinkedList[T comparable]() Lister[T] {
+func NewLinkedList[T comparable]() *SinglyLinkedList[T] {
 	return &SinglyLinkedList[T]{
 		length: 0,
 		head:   &SinglyLinkedNode[T]{},

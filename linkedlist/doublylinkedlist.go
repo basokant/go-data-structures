@@ -75,30 +75,20 @@ func (list *DoublyLinkedList[T]) Delete(node *DoublyLinkedNode[T]) (T, error) {
 
 	if list.tail == node {
 		data = list.tail.Data
-		current := list.head
-
-		for current != nil && current.next != list.tail {
-			current = current.next
-		}
-
-		current.next = nil
-		list.tail = current
+		temp := list.tail.previous
+		temp.next = nil
+		list.tail = temp
 		return data, nil
 	}
-
-	previous := list.head
 	current := list.head.next
 
 	for current != nil {
 		if current == node {
 			// node is found: delete it
 			data = current.Data
-			previous.next = current.next
+			current.previous.next = current.next
 			return data, nil
 		}
-
-		// node was not found, traverse to the next node
-		previous = current
 		current = current.next
 	}
 
@@ -133,12 +123,12 @@ func (list DoublyLinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
 }
 
-// func NewDoublyLinkedList[T comparable]() Lister[T] {
-// 	return &DoublyLinkedList[T]{
-// 		length: 0,
-// 		head:   &Node[T]{},
-// 	}
-// }
+func NewDoublyLinkedList[T comparable]() *DoublyLinkedList[T] {
+	return &DoublyLinkedList[T]{
+		length: 0,
+		head:   &DoublyLinkedNode[T]{},
+	}
+}
 
 func NewDoublyLinkedListFromArray[T comparable](arr []T) *DoublyLinkedList[T] {
 	list := &DoublyLinkedList[T]{}
