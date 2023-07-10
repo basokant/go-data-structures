@@ -2,6 +2,7 @@ package list
 
 import (
 	"errors"
+	"fmt"
 )
 
 type LinkedList[T comparable] struct {
@@ -81,10 +82,7 @@ func (list *LinkedList[T]) Delete(node *Node[T]) error {
 	return errors.New("node with data was not found in the List")
 }
 
-func (list *LinkedList[T]) Search(data T) (*Node[T], error) {
-	if list == nil {
-		return nil, errors.New("cannot search a nil list")
-	}
+func (list LinkedList[T]) Search(data T) (*Node[T], error) {
 	current := list.head
 
 	for current != nil {
@@ -94,6 +92,22 @@ func (list *LinkedList[T]) Search(data T) (*Node[T], error) {
 		current = current.next
 	}
 	return nil, errors.New("node with data was not found in the List")
+}
+
+func (list LinkedList[T]) ToArray() []T {
+	arr := []T{}
+	current := list.head
+
+	for current != nil {
+		arr = append(arr, current.Data)
+		current = current.next
+	}
+
+	return arr
+}
+
+func (list LinkedList[T]) ToString() string {
+	return fmt.Sprint(list.ToArray())
 }
 
 func NewLinkedList[T comparable]() List[T] {
@@ -106,13 +120,17 @@ func NewLinkedList[T comparable]() List[T] {
 func NewLinkedListFromArray[T comparable](arr []T) List[T] {
 	list := &LinkedList[T]{}
 	list.head = &Node[T]{}
+	var previous *Node[T] = nil
 	current := list.head
 
 	for _, data := range arr {
 		current.Data = data
 		current.next = &Node[T]{}
+		previous = current
 		current = current.next
 	}
+
+	previous.next = nil
 
 	return list
 }
