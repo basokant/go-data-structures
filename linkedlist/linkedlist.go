@@ -27,7 +27,7 @@ func (node DoublyLinkedNode[T]) String() string {
 	return fmt.Sprintf("%v -> Node: %v -> %v", node.previous.Data, node.Data, node.next.Data)
 }
 
-type Lister[T comparable] interface {
+type List[T comparable] interface {
 	Prepend(data T) error
 	Append(data T) error
 	// Delete(node *Node[T]) (T, error)
