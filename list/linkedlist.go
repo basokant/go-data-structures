@@ -105,6 +105,7 @@ func NewLinkedList[T comparable]() List[T] {
 
 func NewLinkedListFromArray[T comparable](arr []T) List[T] {
 	list := &LinkedList[T]{}
+	list.head = &Node[T]{}
 	current := list.head
 
 	for _, data := range arr {

@@ -1,9 +1,13 @@
 package list
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNewLinkedListFromArray(t *testing.T) {
-
+	list := NewLinkedListFromArray([]int{1, 2, 3, 4})
+	fmt.Print(list)
 }
 
 func TestLinkedListPrepend(t *testing.T) {
