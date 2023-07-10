@@ -110,27 +110,17 @@ func (list LinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
 }
 
-func NewLinkedList[T comparable]() List[T] {
+func NewLinkedList[T comparable]() Lister[T] {
 	return &LinkedList[T]{
 		length: 0,
 		head:   &Node[T]{},
 	}
 }
 
-func NewLinkedListFromArray[T comparable](arr []T) List[T] {
+func NewLinkedListFromArray[T comparable](arr []T) Lister[T] {
 	list := &LinkedList[T]{}
-	list.head = &Node[T]{}
-	var previous *Node[T] = nil
-	current := list.head
-
 	for _, data := range arr {
-		current.Data = data
-		current.next = &Node[T]{}
-		previous = current
-		current = current.next
+		list.Append(data)
 	}
-
-	previous.next = nil
-
 	return list
 }
