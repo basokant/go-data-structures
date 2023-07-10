@@ -133,14 +133,14 @@ func (list SinglyLinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
 }
 
-func NewLinkedList[T comparable]() *SinglyLinkedList[T] {
+func NewSinglyLinkedList[T comparable]() *SinglyLinkedList[T] {
 	return &SinglyLinkedList[T]{
 		length: 0,
 		head:   &SinglyLinkedNode[T]{},
 	}
 }
 
-func NewLinkedListFromArray[T comparable](arr []T) *SinglyLinkedList[T] {
+func NewSinglyLinkedListFromArray[T comparable](arr []T) *SinglyLinkedList[T] {
 	list := &SinglyLinkedList[T]{}
 	for _, data := range arr {
 		list.Append(data)

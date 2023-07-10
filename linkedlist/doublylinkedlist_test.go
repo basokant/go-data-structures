@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestLinkedListString(t *testing.T) {
-	list := NewSinglyLinkedList[int]()
+func TestDoublyLinkedListString(t *testing.T) {
+	list := NewDoublyLinkedList[int]()
 
 	list.Append(1)
 	list.Append(2)
@@ -21,10 +21,10 @@ func TestLinkedListString(t *testing.T) {
 	}
 }
 
-func TestNewLinkedListFromArray(t *testing.T) {
-	got := NewSinglyLinkedListFromArray([]int{1, 2, 3, 4})
+func TestNewDoublyLinkedListFromArray(t *testing.T) {
+	got := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4})
 
-	want := NewSinglyLinkedList[int]()
+	want := NewDoublyLinkedList[int]()
 
 	want.Append(1)
 	want.Append(2)
@@ -36,64 +36,64 @@ func TestNewLinkedListFromArray(t *testing.T) {
 	}
 }
 
-func TestLinkedListPrepend(t *testing.T) {
-	got := NewSinglyLinkedList[int]()
+func TestDoublyLinkedListPrepend(t *testing.T) {
+	got := NewDoublyLinkedList[int]()
 
 	got.Prepend(1)
 	got.Prepend(2)
 	got.Prepend(3)
 	got.Prepend(4)
 
-	want := NewSinglyLinkedListFromArray([]int{4, 3, 2, 1})
+	want := NewDoublyLinkedListFromArray([]int{4, 3, 2, 1})
 
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("got %q, wanted %q", got, want)
 	}
 
 	got.Prepend(5)
-	want = NewSinglyLinkedListFromArray([]int{5, 4, 3, 2, 1})
+	want = NewDoublyLinkedListFromArray([]int{5, 4, 3, 2, 1})
 
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("got %q, wanted %q", got, want)
 	}
 }
 
-func TestLinkedListAppend(t *testing.T) {
-	got := NewSinglyLinkedList[int]()
+func TestDoublyLinkedListAppend(t *testing.T) {
+	got := NewDoublyLinkedList[int]()
 
 	got.Append(1)
 	got.Append(2)
 	got.Append(3)
 	got.Append(4)
 
-	want := NewSinglyLinkedListFromArray([]int{1, 2, 3, 4})
+	want := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4})
 
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("got %q, wanted %q", got, want)
 	}
 
 	got.Append(5)
-	want = NewSinglyLinkedListFromArray([]int{1, 2, 3, 4, 5})
+	want = NewDoublyLinkedListFromArray([]int{1, 2, 3, 4, 5})
 
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("got %q, wanted %q", got, want)
 	}
 }
 
-func TestLinkedListDelete(t *testing.T) {
-	node := &SinglyLinkedNode[int]{}
+func TestDoublyLinkedListDelete(t *testing.T) {
+	node := &DoublyLinkedNode[int]{}
 
-	empty_list := NewSinglyLinkedList[int]()
+	empty_list := NewDoublyLinkedList[int]()
 	_, err := empty_list.Delete(node)
 
 	if err == nil {
 		t.Errorf("deleting from an empty list %q did not error", empty_list)
 	}
 
-	got := NewSinglyLinkedListFromArray([]int{1, 2, 3, 4, 5})
+	got := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4, 5})
 	data, err := got.Delete(got.head)
 
-	want := NewSinglyLinkedListFromArray([]int{2, 3, 4, 5})
+	want := NewDoublyLinkedListFromArray([]int{2, 3, 4, 5})
 
 	if err != nil || data != 1 || got.String() != want.String() {
 		t.Errorf("got %q, wanted %q", got, want)
@@ -106,15 +106,15 @@ func TestLinkedListDelete(t *testing.T) {
 	}
 }
 
-func TestLinkedListSearch(t *testing.T) {
-	empty_list := NewSinglyLinkedList[int]()
+func TestDoublyLinkedListSearch(t *testing.T) {
+	empty_list := NewDoublyLinkedList[int]()
 	_, err := empty_list.Search(5)
 
 	if err == nil {
 		t.Errorf("searching from an empty list %q did not error", empty_list)
 	}
 
-	list := NewSinglyLinkedListFromArray([]int{1, 2, 3, 4, 5})
+	list := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4, 5})
 	got, err := list.Search(3)
 
 	want := list.head.next.next
