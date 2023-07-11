@@ -41,7 +41,7 @@ func (stack *ArrayStack[T]) Push(data T) error {
 		stack.array = []T{}
 	}
 
-	stack.array = append(stack.array, data)
+	stack.array = append([]T{data}, stack.array...)
 	stack.length++
 	return nil
 }

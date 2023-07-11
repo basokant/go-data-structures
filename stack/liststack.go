@@ -57,7 +57,7 @@ func (stack *ListStack[T]) Push(data T) error {
 		stack.list = list.NewDoublyLinkedList[T]()
 	}
 
-	stack.list.Append(data)
+	stack.list.Prepend(data)
 	stack.length++
 	return nil
 }
