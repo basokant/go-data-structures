@@ -5,5 +5,5 @@ type Stack[T comparable] interface {
 	Pop() (T, error)
 	Peek() (T, error)
 	Search(data T) error
-	Empty() (bool, error)
+	Empty() bool
 }
