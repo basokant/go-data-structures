@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/basokant/go-data-structures/list"
+	"github.com/basokant/go-data-structures/src/list"
 )
 
 type ListStack[T comparable] struct {
