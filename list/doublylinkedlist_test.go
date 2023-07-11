@@ -91,7 +91,7 @@ func TestDoublyLinkedListDelete(t *testing.T) {
 	}
 
 	got := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4, 5})
-	data, err := got.Delete(got.head)
+	data, err := got.Delete(got.Head)
 
 	want := NewDoublyLinkedListFromArray([]int{2, 3, 4, 5})
 
@@ -117,7 +117,7 @@ func TestDoublyLinkedListSearch(t *testing.T) {
 	list := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4, 5})
 	got, err := list.Search(3)
 
-	want := list.head.next.next
+	want := list.Head.Next.Next
 
 	if err != nil || !reflect.DeepEqual(want, got) {
 		t.Errorf("got %q, wanted %q", got, want)
