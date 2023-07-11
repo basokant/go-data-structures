@@ -49,6 +49,7 @@ func (stack *ListStack[T]) Pop() (T, error) {
 		return top, errors.Join(errors.New("top could not be deleted"), err)
 	}
 
+	stack.length--
 	return top, nil
 }
 

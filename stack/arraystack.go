@@ -6,12 +6,12 @@ import (
 )
 
 type ArrayStack[T comparable] struct {
-	array  []T
+	slice  []T
 	length int
 }
 
 func (stack ArrayStack[T]) Empty() bool {
-	return stack.array == nil || stack.length == 0
+	return stack.slice == nil || stack.length == 0
 }
 
 func (stack ArrayStack[T]) Peek() (T, error) {
@@ -20,7 +20,7 @@ func (stack ArrayStack[T]) Peek() (T, error) {
 		return top, errors.New("stack empty, cannot peek the top value")
 	}
 
-	top = stack.array[0]
+	top = stack.slice[0]
 	return top, nil
 }
 
@@ -30,18 +30,18 @@ func (stack *ArrayStack[T]) Pop() (T, error) {
 		return top, errors.New("stack empty, cannot pop the top value")
 	}
 
-	top = stack.array[0]
-	stack.array = stack.array[1:]
+	top = stack.slice[0]
+	stack.slice = stack.slice[1:]
 	stack.length--
 	return top, nil
 }
 
 func (stack *ArrayStack[T]) Push(data T) error {
-	if stack.array == nil {
-		stack.array = []T{}
+	if stack.slice == nil {
+		stack.slice = []T{}
 	}
 
-	stack.array = append([]T{data}, stack.array...)
+	stack.slice = append([]T{data}, stack.slice...)
 	stack.length++
 	return nil
 }
@@ -51,7 +51,7 @@ func (stack ArrayStack[T]) Search(data T) error {
 		return errors.New("stack empty, cannot search an empty stack")
 	}
 
-	for _, v := range stack.array {
+	for _, v := range stack.slice {
 		if v == data {
 			return nil
 		}
