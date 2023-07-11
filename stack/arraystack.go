@@ -42,6 +42,7 @@ func (stack *ArrayStack[T]) Push(data T) error {
 	}
 
 	stack.array = append(stack.array, data)
+	stack.length++
 	return nil
 }
 
@@ -56,7 +57,7 @@ func (stack *ArrayStack[T]) Search(data T) error {
 		}
 	}
 
-	return fmt.Errorf("could not find %v in the stack %", data)
+	return fmt.Errorf("data was not found in the stack")
 }
 
 func NewArrayStack[T comparable]() Stack[T] {
