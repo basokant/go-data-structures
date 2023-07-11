@@ -10,13 +10,13 @@ type ArrayStack[T comparable] struct {
 	length int
 }
 
-func (stack *ArrayStack[T]) Empty() bool {
-	return stack.length == 0
+func (stack ArrayStack[T]) Empty() bool {
+	return stack.array == nil || stack.length == 0
 }
 
-func (stack *ArrayStack[T]) Peek() (T, error) {
+func (stack ArrayStack[T]) Peek() (T, error) {
 	var top T
-	if stack.array == nil || stack.length == 0 {
+	if stack.Empty() {
 		return top, errors.New("stack empty, cannot peek the top value")
 	}
 
@@ -26,7 +26,7 @@ func (stack *ArrayStack[T]) Peek() (T, error) {
 
 func (stack *ArrayStack[T]) Pop() (T, error) {
 	var top T
-	if stack.array == nil || stack.length == 0 {
+	if stack.Empty() {
 		return top, errors.New("stack empty, cannot pop the top value")
 	}
 
@@ -46,8 +46,8 @@ func (stack *ArrayStack[T]) Push(data T) error {
 	return nil
 }
 
-func (stack *ArrayStack[T]) Search(data T) error {
-	if stack.array == nil || stack.length == 0 {
+func (stack ArrayStack[T]) Search(data T) error {
+	if stack.Empty() {
 		return errors.New("stack empty, cannot search an empty stack")
 	}
 
