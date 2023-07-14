@@ -8,7 +8,7 @@ import (
 )
 
 type BinarySearchTreeNode[T constraints.Ordered] struct {
-	Data  T
+	data  T
 	Left  *BinarySearchTreeNode[T]
 	Right *BinarySearchTreeNode[T]
 }
@@ -17,15 +17,19 @@ func NewBSTNode[T constraints.Ordered]() TreeNode[T] {
 	return &BinarySearchTreeNode[T]{}
 }
 
+func (node BinarySearchTreeNode[T]) Data() T {
+	return node.data
+}
+
 // Children implements TreeNode.
-func (node BinarySearchTreeNode[T]) Children() ([]*TreeNode[T], error) {
+func (node BinarySearchTreeNode[T]) Children() ([]TreeNode[T], error) {
 	if node.Left == nil && node.Right == nil {
 		return nil, nil
 	}
 	left, right := TreeNode[T](node.Left), TreeNode[T](node.Right)
 
-	children := make([]*TreeNode[T], 2)
-	children[0], children[1] = &left, &right
+	children := make([]TreeNode[T], 2)
+	children[0], children[1] = left, right
 
 	return children, nil
 }
@@ -49,12 +53,11 @@ type BinarySearchTree[T constraints.Ordered] struct {
 }
 
 // Root implements TreeNode.
-func (tree BinarySearchTree[T]) Root() (*TreeNode[T], error) {
+func (tree BinarySearchTree[T]) Root() (TreeNode[T], error) {
 	if tree.root == nil {
 		return nil, errors.New("tree is empty, it has no root")
 	}
-	root := TreeNode[T](tree.root)
-	return &root, nil
+	return tree.root, nil
 }
 
 // Insert implements Tree.
@@ -64,7 +67,7 @@ func (tree *BinarySearchTree[T]) Insert(data T) error {
 	}
 
 	node := &BinarySearchTreeNode[T]{
-		Data:  data,
+		data:  data,
 		Left:  nil,
 		Right: nil,
 	}
@@ -77,16 +80,16 @@ func (tree *BinarySearchTree[T]) Insert(data T) error {
 	terminalNode := tree.root
 
 	for !terminalNode.IsLeaf() {
-		if data <= terminalNode.Data {
+		if data <= terminalNode.data {
 			terminalNode = terminalNode.Left
-		} else if data > terminalNode.Data {
+		} else if data > terminalNode.data {
 			terminalNode = terminalNode.Right
 		}
 	}
 
-	if data <= terminalNode.Data {
+	if data <= terminalNode.data {
 		terminalNode.Left = node
-	} else if data > terminalNode.Data {
+	} else if data > terminalNode.data {
 		terminalNode.Right = node
 	}
 
@@ -107,21 +110,38 @@ func (tree BinarySearchTree[T]) Height() int {
 }
 
 // Level implements Tree.
-func (*BinarySearchTree[T]) Level(node *TreeNode[T]) (int, error) {
-	panic("unimplemented")
+func (tree *BinarySearchTree[T]) Level(node TreeNode[T]) (int, error) {
+	curr, level := tree.root, 0
+
+	if node == nil {
+		return -1, errors.New("nil node does not exist in tree")
+	}
+
+	for curr != nil {
+		if curr.Data() == node.Data() {
+			return level, nil
+		} else if node.Data() < curr.Data() {
+			curr = curr.Left
+			level++
+		} else if node.Data() > curr.Data() {
+			curr = curr.Right
+			level++
+		}
+	}
+
+	return -1, errors.New("could not find node with data")
 }
 
 // Search implements Tree.
-func (tree *BinarySearchTree[T]) Search(data T) (*TreeNode[T], error) {
+func (tree *BinarySearchTree[T]) Search(data T) (TreeNode[T], error) {
 	node := tree.root
 
 	for node != nil {
-		if node.Data == data {
-			treeNode := TreeNode[T](node)
-			return &treeNode, nil
-		} else if data < node.Data {
+		if node.Data() == data {
+			return node, nil
+		} else if data < node.Data() {
 			node = node.Left
-		} else if data > node.Data {
+		} else if data > node.Data() {
 			node = node.Right
 		}
 	}
