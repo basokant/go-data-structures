@@ -1,11 +1,11 @@
 package tree
 
 type TreeNode[T comparable] interface {
-	Root() (*TreeNode[T], error)
 	Children() ([]*TreeNode[T], error)
 }
 
 type Tree[T comparable] interface {
+	Root() (*TreeNode[T], error)
 	Insert(data T) error
 	Delete(data T) error
 	Search(data T) (*TreeNode[T], error)

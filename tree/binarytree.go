@@ -11,18 +11,30 @@ func NewBinaryTreeNode[T comparable]() TreeNode[T] {
 }
 
 // Children implements TreeNode.
-func (*BinaryTreeNode[T]) Children() ([]*TreeNode[T], error) {
-	panic("unimplemented")
-}
+func (node *BinaryTreeNode[T]) Children() ([]*TreeNode[T], error) {
+	if node.left == nil && node.right == nil {
+		return nil, nil
+	}
+	left, right := TreeNode[T](node.left), TreeNode[T](node.right)
 
-// Root implements TreeNode.
-func (*BinaryTreeNode[T]) Root() (*TreeNode[T], error) {
-	panic("unimplemented")
+	children := make([]*TreeNode[T], 2)
+	children[0], children[1] = &left, &right
+
+	return children, nil
 }
 
 type BinaryTree[T comparable] struct {
 	root *BinaryTreeNode[T]
 	size int
+}
+
+// Root implements TreeNode.
+func (tree *BinaryTree[T]) Root() (*TreeNode[T], error) {
+	if tree.root == nil {
+		return nil, nil
+	}
+	root := TreeNode[T](tree.root)
+	return &root, nil
 }
 
 // Delete implements Tree.
