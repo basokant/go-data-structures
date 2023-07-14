@@ -112,8 +112,21 @@ func (*BinarySearchTree[T]) Level(node *TreeNode[T]) (int, error) {
 }
 
 // Search implements Tree.
-func (*BinarySearchTree[T]) Search(data T) (*TreeNode[T], error) {
-	panic("unimplemented")
+func (tree *BinarySearchTree[T]) Search(data T) (*TreeNode[T], error) {
+	node := tree.root
+
+	for node != nil {
+		if node.Data == data {
+			treeNode := TreeNode[T](node)
+			return &treeNode, nil
+		} else if data < node.Data {
+			node = node.Left
+		} else if data > node.Data {
+			node = node.Right
+		}
+	}
+
+	return nil, errors.New("could not find node with data")
 }
 
 // Size implements Tree.
