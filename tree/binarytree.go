@@ -110,7 +110,7 @@ func (tree BinarySearchTree[T]) Height() int {
 }
 
 // Level implements Tree.
-func (tree *BinarySearchTree[T]) Level(node TreeNode[T]) (int, error) {
+func (tree BinarySearchTree[T]) Level(node TreeNode[T]) (int, error) {
 	curr, level := tree.root, 0
 
 	if node == nil {
@@ -133,7 +133,7 @@ func (tree *BinarySearchTree[T]) Level(node TreeNode[T]) (int, error) {
 }
 
 // Search implements Tree.
-func (tree *BinarySearchTree[T]) Search(data T) (TreeNode[T], error) {
+func (tree BinarySearchTree[T]) Search(data T) (TreeNode[T], error) {
 	node := tree.root
 
 	for node != nil {
@@ -150,7 +150,7 @@ func (tree *BinarySearchTree[T]) Search(data T) (TreeNode[T], error) {
 }
 
 // Size implements Tree.
-func (tree *BinarySearchTree[T]) Size() int {
+func (tree BinarySearchTree[T]) Size() int {
 	return tree.size
 }
 
