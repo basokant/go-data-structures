@@ -1,21 +1,27 @@
 package tree
 
-type BinaryTreeNode[T comparable] struct {
-	data  T
-	left  *BinaryTreeNode[T]
-	right *BinaryTreeNode[T]
+import (
+	"errors"
+
+	"golang.org/x/exp/constraints"
+)
+
+type BinarySearchTreeNode[T constraints.Ordered] struct {
+	Data  T
+	Left  *BinarySearchTreeNode[T]
+	Right *BinarySearchTreeNode[T]
 }
 
-func NewBinaryTreeNode[T comparable]() TreeNode[T] {
-	return &BinaryTreeNode[T]{}
+func NewBSTNode[T constraints.Ordered]() TreeNode[T] {
+	return &BinarySearchTreeNode[T]{}
 }
 
 // Children implements TreeNode.
-func (node *BinaryTreeNode[T]) Children() ([]*TreeNode[T], error) {
-	if node.left == nil && node.right == nil {
+func (node BinarySearchTreeNode[T]) Children() ([]*TreeNode[T], error) {
+	if node.Left == nil && node.Right == nil {
 		return nil, nil
 	}
-	left, right := TreeNode[T](node.left), TreeNode[T](node.right)
+	left, right := TreeNode[T](node.Left), TreeNode[T](node.Right)
 
 	children := make([]*TreeNode[T], 2)
 	children[0], children[1] = &left, &right
@@ -23,55 +29,90 @@ func (node *BinaryTreeNode[T]) Children() ([]*TreeNode[T], error) {
 	return children, nil
 }
 
-type BinaryTree[T comparable] struct {
-	root *BinaryTreeNode[T]
+func (node BinarySearchTreeNode[T]) IsLeaf() bool {
+	return node.Left == nil && node.Right == nil
+}
+
+type BinarySearchTree[T constraints.Ordered] struct {
+	root *BinarySearchTreeNode[T]
 	size int
 }
 
 // Root implements TreeNode.
-func (tree *BinaryTree[T]) Root() (*TreeNode[T], error) {
+func (tree BinarySearchTree[T]) Root() (*TreeNode[T], error) {
 	if tree.root == nil {
-		return nil, nil
+		return nil, errors.New("tree is empty, it has no root")
 	}
 	root := TreeNode[T](tree.root)
 	return &root, nil
 }
 
+// Insert implements Tree.
+func (tree *BinarySearchTree[T]) Insert(data T) error {
+	if tree == nil {
+		return errors.New("cannot insert into nil tree")
+	}
+
+	node := &BinarySearchTreeNode[T]{
+		Data:  data,
+		Left:  nil,
+		Right: nil,
+	}
+
+	if tree.root == nil {
+		tree.root = node
+		return nil
+	}
+
+	terminalNode := tree.root
+
+	for !terminalNode.IsLeaf() {
+		if data <= terminalNode.Data {
+			terminalNode = terminalNode.Left
+		} else if data > terminalNode.Data {
+			terminalNode = terminalNode.Right
+		}
+	}
+
+	if data <= terminalNode.Data {
+		terminalNode.Left = node
+	} else if data > terminalNode.Data {
+		terminalNode.Right = node
+	}
+
+	return nil
+}
+
 // Delete implements Tree.
-func (*BinaryTree[T]) Delete(data T) error {
+func (*BinarySearchTree[T]) Delete(data T) error {
 	panic("unimplemented")
 }
 
 // Height implements Tree.
-func (*BinaryTree[T]) Height() (int, error) {
-	panic("unimplemented")
-}
-
-// Insert implements Tree.
-func (*BinaryTree[T]) Insert(data T) error {
+func (*BinarySearchTree[T]) Height() (int, error) {
 	panic("unimplemented")
 }
 
 // Level implements Tree.
-func (*BinaryTree[T]) Level(node *TreeNode[T]) (int, error) {
+func (*BinarySearchTree[T]) Level(node *TreeNode[T]) (int, error) {
 	panic("unimplemented")
 }
 
 // Search implements Tree.
-func (*BinaryTree[T]) Search(data T) (*TreeNode[T], error) {
+func (*BinarySearchTree[T]) Search(data T) (*TreeNode[T], error) {
 	panic("unimplemented")
 }
 
 // Size implements Tree.
-func (*BinaryTree[T]) Size() int {
-	panic("unimplemented")
+func (tree *BinarySearchTree[T]) Size() int {
+	return tree.size
 }
 
 // Traverse implements Tree.
-func (*BinaryTree[T]) Traverse(op func(T)) error {
+func (*BinarySearchTree[T]) Traverse(op func(T)) error {
 	panic("unimplemented")
 }
 
-func NewBinaryTree[T comparable]() Tree[T] {
-	return &BinaryTree[T]{}
+func NewBinaryTree[T constraints.Ordered]() Tree[T] {
+	return &BinarySearchTree[T]{}
 }

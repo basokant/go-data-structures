@@ -2,6 +2,7 @@ package tree
 
 type TreeNode[T comparable] interface {
 	Children() ([]*TreeNode[T], error)
+	IsLeaf() bool
 }
 
 type Tree[T comparable] interface {
