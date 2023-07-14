@@ -34,11 +34,11 @@ func (node BinarySearchTreeNode[T]) IsLeaf() bool {
 	return node.Left == nil && node.Right == nil
 }
 
-func (node BinarySearchTreeNode[T]) height() int {
+func (node BinarySearchTreeNode[T]) Height() int {
 	if node.IsLeaf() {
 		return 1
 	}
-	leftHeight, rightHeight := float64(node.Left.height()), float64(node.Right.height())
+	leftHeight, rightHeight := float64(node.Left.Height()), float64(node.Right.Height())
 
 	return int(math.Max(leftHeight, rightHeight)) + 1
 }
@@ -99,8 +99,11 @@ func (*BinarySearchTree[T]) Delete(data T) error {
 }
 
 // Height implements Tree.
-func (*BinarySearchTree[T]) Height() (int, error) {
-	panic("unimplemented")
+func (tree BinarySearchTree[T]) Height() int {
+	if tree.root == nil {
+		return 0
+	}
+	return tree.root.Height()
 }
 
 // Level implements Tree.
