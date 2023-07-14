@@ -2,6 +2,7 @@ package tree
 
 import (
 	"errors"
+	"math"
 
 	"golang.org/x/exp/constraints"
 )
@@ -31,6 +32,15 @@ func (node BinarySearchTreeNode[T]) Children() ([]*TreeNode[T], error) {
 
 func (node BinarySearchTreeNode[T]) IsLeaf() bool {
 	return node.Left == nil && node.Right == nil
+}
+
+func (node BinarySearchTreeNode[T]) height() int {
+	if node.IsLeaf() {
+		return 1
+	}
+	leftHeight, rightHeight := float64(node.Left.height()), float64(node.Right.height())
+
+	return int(math.Max(leftHeight, rightHeight)) + 1
 }
 
 type BinarySearchTree[T constraints.Ordered] struct {
