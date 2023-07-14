@@ -13,7 +13,7 @@ type BinarySearchTreeNode[T constraints.Ordered] struct {
 	Right *BinarySearchTreeNode[T]
 }
 
-func NewBSTNode[T constraints.Ordered]() TreeNode[T] {
+func NewBinarySearchTreeNode[T constraints.Ordered]() TreeNode[T] {
 	return &BinarySearchTreeNode[T]{}
 }
 
@@ -159,6 +159,6 @@ func (*BinarySearchTree[T]) Traverse(op func(T)) error {
 	panic("unimplemented")
 }
 
-func NewBinaryTree[T constraints.Ordered]() Tree[T] {
+func NewBinarySearchTree[T constraints.Ordered]() Tree[T] {
 	return &BinarySearchTree[T]{}
 }
