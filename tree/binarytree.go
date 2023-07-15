@@ -47,6 +47,18 @@ func (node BinarySearchTreeNode[T]) Height() int {
 	return int(math.Max(leftHeight, rightHeight)) + 1
 }
 
+func (node BinarySearchTreeNode[T]) traverse(op func(node TreeNode[T])) {
+	if node.Left != nil {
+		node.Left.traverse(op)
+	}
+
+	op(node)
+
+	if node.Right != nil {
+		node.Right.traverse(op)
+	}
+}
+
 type BinarySearchTree[T constraints.Ordered] struct {
 	root *BinarySearchTreeNode[T]
 	size int
@@ -155,8 +167,8 @@ func (tree BinarySearchTree[T]) Size() int {
 }
 
 // Traverse implements Tree.
-func (*BinarySearchTree[T]) Traverse(op func(T)) error {
-	panic("unimplemented")
+func (tree BinarySearchTree[T]) Traverse(op func(node TreeNode[T])) {
+	tree.root.traverse(op)
 }
 
 func NewBinarySearchTree[T constraints.Ordered]() Tree[T] {
