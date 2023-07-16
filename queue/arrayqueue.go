@@ -7,25 +7,25 @@ import (
 
 type ArrayQueue[T comparable] struct {
 	slice  []T
-	length int
+	Length int
 }
 
 // Dequeue implements Queue.
 func (queue *ArrayQueue[T]) Dequeue() (T, error) {
 	var top T
-	if queue.Empty() {
+	if queue.IsEmpty() {
 		return top, errors.New("queue empty, cannot pop the top value")
 	}
 
 	top = queue.slice[0]
 	queue.slice = queue.slice[1:]
-	queue.length--
+	queue.Length--
 	return top, nil
 }
 
-// Empty implements Queue.
-func (queue ArrayQueue[T]) Empty() bool {
-	return queue.slice == nil || queue.length == 0
+// IsEmpty implements Queue.
+func (queue ArrayQueue[T]) IsEmpty() bool {
+	return queue.slice == nil || queue.Length == 0
 }
 
 // Enqueue implements Queue.
@@ -35,14 +35,14 @@ func (queue *ArrayQueue[T]) Enqueue(data T) error {
 	}
 
 	queue.slice = append(queue.slice, data)
-	queue.length++
+	queue.Length++
 	return nil
 }
 
 // Front implements Queue.
 func (queue ArrayQueue[T]) Front() (T, error) {
 	var top T
-	if queue.Empty() {
+	if queue.IsEmpty() {
 		return top, errors.New("queue empty, cannot pop the top value")
 	}
 
@@ -52,7 +52,7 @@ func (queue ArrayQueue[T]) Front() (T, error) {
 
 // Search implements Queue.
 func (queue ArrayQueue[T]) Search(data T) error {
-	if queue.Empty() {
+	if queue.IsEmpty() {
 		return errors.New("queue empty, cannot search an empty queue")
 	}
 
@@ -63,6 +63,10 @@ func (queue ArrayQueue[T]) Search(data T) error {
 	}
 
 	return fmt.Errorf("data was not found in the queue")
+}
+
+func (queue ArrayQueue[T]) Size() int {
+	return queue.Length
 }
 
 func NewArrayQueue[T comparable]() Queue[T] {

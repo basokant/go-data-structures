@@ -2,8 +2,10 @@ package tree
 
 import (
 	"errors"
+	"fmt"
 	"math"
 
+	"github.com/basokant/go-data-structures/queue"
 	"golang.org/x/exp/constraints"
 )
 
@@ -47,16 +49,38 @@ func (node BinarySearchTreeNode[T]) Height() int {
 	return int(math.Max(leftHeight, rightHeight)) + 1
 }
 
-func (node BinarySearchTreeNode[T]) traverse(op func(node TreeNode[T])) {
+func (node BinarySearchTreeNode[T]) inorderTraverse(op func(node TreeNode[T])) {
 	if node.Left != nil {
-		node.Left.traverse(op)
+		node.Left.inorderTraverse(op)
 	}
 
 	op(node)
 
 	if node.Right != nil {
-		node.Right.traverse(op)
+		node.Right.inorderTraverse(op)
 	}
+}
+
+func (node BinarySearchTreeNode[T]) preorderTraverse(op func(node TreeNode[T])) {
+	op(node)
+	if node.Left != nil {
+		node.Left.inorderTraverse(op)
+	}
+
+	if node.Right != nil {
+		node.Right.inorderTraverse(op)
+	}
+}
+
+func (node BinarySearchTreeNode[T]) postorderTraverse(op func(node TreeNode[T])) {
+	if node.Left != nil {
+		node.Left.inorderTraverse(op)
+	}
+
+	if node.Right != nil {
+		node.Right.inorderTraverse(op)
+	}
+	op(node)
 }
 
 type BinarySearchTree[T constraints.Ordered] struct {
@@ -166,9 +190,36 @@ func (tree BinarySearchTree[T]) Size() int {
 	return tree.size
 }
 
+func (tree BinarySearchTree[T]) levelorderTraverse(op func(node TreeNode[T])) {
+	q := queue.NewArrayQueue[*BinarySearchTreeNode[T]]()
+	q.Enqueue(tree.root)
+
+	level := 0
+	for !q.IsEmpty() {
+		fmt.Println(level)
+		for i := 0; i < q.Size(); i++ {
+			curr, _ := q.Dequeue()
+			if curr != nil {
+				op(curr)
+				q.Enqueue(curr.Left)
+				q.Enqueue(curr.Right)
+			}
+		}
+	}
+}
+
 // Traverse implements Tree.
-func (tree BinarySearchTree[T]) Traverse(op func(node TreeNode[T])) {
-	tree.root.traverse(op)
+func (tree BinarySearchTree[T]) Traverse(op func(node TreeNode[T]), order Order) {
+	switch order {
+	case Inorder:
+		tree.root.inorderTraverse(op)
+	case Preorder:
+		tree.root.preorderTraverse(op)
+	case Postorder:
+		tree.root.postorderTraverse(op)
+	case Levelorder:
+		tree.levelorderTraverse(op)
+	}
 }
 
 func NewBinarySearchTree[T constraints.Ordered]() Tree[T] {

@@ -5,5 +5,6 @@ type Queue[T comparable] interface {
 	Dequeue() (T, error)
 	Front() (T, error)
 	Search(data T) error
-	Empty() bool
+	IsEmpty() bool
+	Size() int
 }
