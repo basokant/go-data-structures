@@ -78,7 +78,10 @@ func (stack ListStack[T]) Len() int {
 }
 
 func NewListStack[T comparable]() Stack[T] {
-	return &ListStack[T]{}
+	return &ListStack[T]{
+		list:   list.NewDoublyLinkedList[T](),
+		length: 0,
+	}
 }
 
 func NewListStackFromArray[T comparable](arr []T) Stack[T] {

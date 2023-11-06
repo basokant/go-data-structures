@@ -18,17 +18,17 @@ func TestListStackEmpty(t *testing.T) {
 }
 
 func TestListStackPeek(t *testing.T) {
-	stack := NewListStack[int]()
+	st := NewListStack[int]()
 
-	_, err := stack.Peek()
+	_, err := st.Peek()
 	if err == nil {
 		t.Error("Peek should error if there are no elements, it did not error.")
 	}
 
 	slice := []int{0, 1, 2}
-	stack = NewListStackFromArray[int](slice)
+	st = NewListStackFromArray[int](slice)
 
-	top, err := stack.Peek()
+	top, err := st.Peek()
 	if err != nil {
 		t.Error("Peek should not error if array is populated.")
 	} else if top != 0 {
@@ -37,24 +37,24 @@ func TestListStackPeek(t *testing.T) {
 }
 
 func TestListStackPop(t *testing.T) {
-	stack := NewListStack[int]()
+	st := NewListStack[int]()
 
-	_, err := stack.Pop()
+	_, err := st.Pop()
 	if err == nil {
 		t.Error("Pop should error if there are no elements, it did not error.")
 	}
 
 	slice := []int{0, 1, 2}
-	stack = NewListStackFromArray[int](slice)
+	st = NewListStackFromArray[int](slice)
 
-	top, err := stack.Pop()
+	top, err := st.Pop()
 	if err != nil {
 		t.Error("Pop should not error if array is populated.")
 	} else if top != 0 {
 		t.Errorf("got %q, wanted %q", top, 0)
 	}
 
-	top, err = stack.Pop()
+	top, err = st.Pop()
 	if err != nil {
 		t.Error("Pop should not error if array is populated.")
 	} else if top != 1 {
@@ -63,26 +63,26 @@ func TestListStackPop(t *testing.T) {
 }
 
 func TestListStackPush(t *testing.T) {
-	stack := NewListStack[int]()
+	st := NewListStack[int]()
 
-	err := stack.Push(0)
+	err := st.Push(0)
 	if err != nil {
 		t.Error("Push should not error when called on empty stack.")
 	}
 
-	err = stack.Push(1)
+	err = st.Push(1)
 	if err != nil {
 		t.Error("Push encountered an error when it should not have.")
 	}
 
-	top, err := stack.Peek()
+	top, err := st.Peek()
 	if err != nil {
 		t.Errorf("Peek encountered an error when it should not have.")
 	} else if top != 1 {
 		t.Errorf("got %q, wanted %q", top, 1)
 	}
 
-	top, err = stack.Pop()
+	top, err = st.Pop()
 	if err != nil {
 		t.Errorf("Pop encountered an error when it should not have.")
 	} else if top != 1 {
@@ -91,19 +91,19 @@ func TestListStackPush(t *testing.T) {
 }
 
 func TestListStackSearch(t *testing.T) {
-	stack := NewListStack[int]()
+	st := NewListStack[int]()
 
-	index, err := stack.Search(0)
+	index, err := st.Search(0)
 
 	if err == nil || index >= 0 {
 		t.Error("Empty stack should not be searchable.")
 	}
 
 	slice := []int{0, 1, 2, 3, 4}
-	stack = NewListStackFromArray[int](slice)
+	st = NewListStackFromArray[int](slice)
 
 	for i, v := range slice {
-		index, err = stack.Search(v)
+		index, err = st.Search(v)
 
 		if err != nil {
 			t.Errorf("Error occured while searching stack for value %q", v)

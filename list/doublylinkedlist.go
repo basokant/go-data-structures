@@ -34,10 +34,6 @@ func (list *DoublyLinkedList[T]) Prepend(data T) error {
 }
 
 func (list *DoublyLinkedList[T]) Append(data T) error {
-	if list == nil {
-		return errors.New("cannot prepend new node on nil list")
-	}
-
 	newNode := &DoublyLinkedNode[T]{
 		Data: T(data),
 	}
@@ -56,8 +52,9 @@ func (list *DoublyLinkedList[T]) Append(data T) error {
 
 func (list *DoublyLinkedList[T]) Delete(node *DoublyLinkedNode[T]) (T, error) {
 	var data T
-	if list == nil {
-		return data, errors.New("cannot delete from a nil list")
+
+	if list.length == 0 {
+		return data, errors.New("cannot delete from an empty list")
 	}
 
 	if list.length == 1 {
@@ -144,10 +141,7 @@ func (list DoublyLinkedList[T]) Len() int {
 }
 
 func NewDoublyLinkedList[T comparable]() *DoublyLinkedList[T] {
-	return &DoublyLinkedList[T]{
-		length: 0,
-		Head:   &DoublyLinkedNode[T]{},
-	}
+	return &DoublyLinkedList[T]{}
 }
 
 func NewDoublyLinkedListFromArray[T comparable](arr []T) *DoublyLinkedList[T] {
