@@ -33,4 +33,5 @@ type List[T comparable] interface {
 	// Get(index int) (*Node[T], error)
 	Array() []T
 	String() string
+	Len() int
 }

@@ -108,22 +108,24 @@ func TestDoublyLinkedListDelete(t *testing.T) {
 
 func TestDoublyLinkedListSearch(t *testing.T) {
 	empty_list := NewDoublyLinkedList[int]()
-	_, err := empty_list.Search(5)
+	_, _, err := empty_list.Search(5)
 
 	if err == nil {
 		t.Errorf("searching from an empty list %q did not error", empty_list)
 	}
 
 	list := NewDoublyLinkedListFromArray([]int{1, 2, 3, 4, 5})
-	got, err := list.Search(3)
+	index, got, err := list.Search(3)
 
 	want := list.Head.Next.Next
 
 	if err != nil || !reflect.DeepEqual(want, got) {
-		t.Errorf("got %q, wanted %q", got, want)
+		t.Errorf("got value %q, wanted value %q", got, want)
+	} else if index != 2 {
+		t.Errorf("got index %q, wanted index %q", index, 2)
 	}
 
-	_, err = list.Search(6)
+	_, _, err = list.Search(6)
 
 	if err == nil {
 		t.Errorf("searching for value %q that is not in the list %q did not error", 6, list)

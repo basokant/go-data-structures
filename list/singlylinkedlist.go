@@ -6,9 +6,9 @@ import (
 )
 
 type SinglyLinkedList[T comparable] struct {
-	Length int
 	Head   *SinglyLinkedNode[T]
 	Tail   *SinglyLinkedNode[T]
+	Length int
 }
 
 func (list *SinglyLinkedList[T]) Prepend(data T) error {
@@ -105,16 +105,18 @@ func (list *SinglyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
 	return data, errors.New("node with data was not found in the List")
 }
 
-func (list SinglyLinkedList[T]) Search(data T) (*SinglyLinkedNode[T], error) {
+func (list SinglyLinkedList[T]) Search(data T) (int, *SinglyLinkedNode[T], error) {
 	current := list.Head
+	index := 0
 
 	for current != nil {
 		if current.Data == data {
-			return current, nil
+			return index, current, nil
 		}
+		index++
 		current = current.Next
 	}
-	return nil, errors.New("node with data was not found in the List")
+	return -1, nil, errors.New("node with data was not found in the List")
 }
 
 func (list SinglyLinkedList[T]) Get(index int) (*SinglyLinkedNode[T], error) {
@@ -145,6 +147,10 @@ func (list SinglyLinkedList[T]) Array() []T {
 
 func (list SinglyLinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
+}
+
+func (list SinglyLinkedList[T]) Len() int {
+	return list.Length
 }
 
 func NewSinglyLinkedList[T comparable]() *SinglyLinkedList[T] {

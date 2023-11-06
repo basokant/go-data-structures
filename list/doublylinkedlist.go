@@ -6,9 +6,9 @@ import (
 )
 
 type DoublyLinkedList[T comparable] struct {
-	Length int
 	Head   *DoublyLinkedNode[T]
 	Tail   *DoublyLinkedNode[T]
+	length int
 }
 
 func (list *DoublyLinkedList[T]) Prepend(data T) error {
@@ -20,7 +20,7 @@ func (list *DoublyLinkedList[T]) Prepend(data T) error {
 		Data: T(data),
 	}
 
-	if list.Length == 0 {
+	if list.length == 0 {
 		list.Head = newNode
 		list.Tail = newNode
 	} else {
@@ -29,7 +29,7 @@ func (list *DoublyLinkedList[T]) Prepend(data T) error {
 		list.Head = newNode
 	}
 
-	list.Length += 1
+	list.length += 1
 	return nil
 }
 
@@ -42,7 +42,7 @@ func (list *DoublyLinkedList[T]) Append(data T) error {
 		Data: T(data),
 	}
 
-	if list.Length == 0 {
+	if list.length == 0 {
 		list.Head = newNode
 		list.Tail = newNode
 	} else {
@@ -50,7 +50,7 @@ func (list *DoublyLinkedList[T]) Append(data T) error {
 		temp.Next = newNode
 		list.Tail = newNode
 	}
-	list.Length += 1
+	list.length += 1
 	return nil
 }
 
@@ -60,7 +60,7 @@ func (list *DoublyLinkedList[T]) Delete(node *DoublyLinkedNode[T]) (T, error) {
 		return data, errors.New("cannot delete from a nil list")
 	}
 
-	if list.Length == 1 {
+	if list.length == 1 {
 		data = list.Head.Data
 		list.Head = nil
 		list.Tail = nil
@@ -95,22 +95,24 @@ func (list *DoublyLinkedList[T]) Delete(node *DoublyLinkedNode[T]) (T, error) {
 	return data, errors.New("node with data was not found in the List")
 }
 
-func (list DoublyLinkedList[T]) Search(data T) (*DoublyLinkedNode[T], error) {
+func (list DoublyLinkedList[T]) Search(data T) (int, *DoublyLinkedNode[T], error) {
 	current := list.Head
+	index := 0
 
 	for current != nil {
 		if current.Data == data {
-			return current, nil
+			return index, current, nil
 		}
+		index++
 		current = current.Next
 	}
-	return nil, errors.New("node with data was not found in the List")
+	return -1, nil, errors.New("node with data was not found in the List")
 }
 
 func (list DoublyLinkedList[T]) Get(index int) (*DoublyLinkedNode[T], error) {
 	current := list.Head
 
-	if index >= list.Length {
+	if index >= list.length {
 		return nil, errors.New("index out of bounds of the List")
 	}
 
@@ -137,9 +139,13 @@ func (list DoublyLinkedList[T]) String() string {
 	return fmt.Sprint(list.Array())
 }
 
+func (list DoublyLinkedList[T]) Len() int {
+	return list.length
+}
+
 func NewDoublyLinkedList[T comparable]() *DoublyLinkedList[T] {
 	return &DoublyLinkedList[T]{
-		Length: 0,
+		length: 0,
 		Head:   &DoublyLinkedNode[T]{},
 	}
 }
