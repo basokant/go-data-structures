@@ -186,7 +186,7 @@ func (tree BinarySearchTree[T]) Search(data T) (TreeNode[T], error) {
 }
 
 // Size implements Tree.
-func (tree BinarySearchTree[T]) Size() int {
+func (tree BinarySearchTree[T]) Len() int {
 	return tree.size
 }
 

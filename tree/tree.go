@@ -33,5 +33,5 @@ type Tree[T comparable] interface {
 	Traverse(op func(node TreeNode[T]), order Order)
 	Height() int
 	Level(node TreeNode[T]) (int, error)
-	Size() int
+	Len() int
 }
