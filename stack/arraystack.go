@@ -46,20 +46,34 @@ func (stack *ArrayStack[T]) Push(data T) error {
 	return nil
 }
 
-func (stack ArrayStack[T]) Search(data T) error {
+func (stack ArrayStack[T]) Search(data T) (int, error) {
 	if stack.Empty() {
-		return errors.New("stack empty, cannot search an empty stack")
+		return -1, errors.New("stack empty, cannot search an empty stack")
 	}
 
-	for _, v := range stack.slice {
+	for i, v := range stack.slice {
 		if v == data {
-			return nil
+			return i, nil
 		}
 	}
 
-	return fmt.Errorf("data was not found in the stack")
+	return -1, fmt.Errorf("data was not found in the stack")
+}
+
+func (stack ArrayStack[T]) Len() int {
+	return stack.length
 }
 
 func NewArrayStack[T comparable]() Stack[T] {
 	return &ArrayStack[T]{}
+}
+
+func NewArrayStackFromArray[T comparable](slice []T) Stack[T] {
+	sliceCopy := make([]T, len(slice))
+	copy(sliceCopy, slice)
+
+	return &ArrayStack[T]{
+		slice:  sliceCopy,
+		length: len(sliceCopy),
+	}
 }

@@ -63,16 +63,28 @@ func (stack *ListStack[T]) Push(data T) error {
 	return nil
 }
 
-func (stack ListStack[T]) Search(data T) error {
-	_, err := stack.list.Search(data)
+func (stack ListStack[T]) Search(data T) (int, error) {
+	index, _, err := stack.list.Search(data)
 
 	if err != nil {
-		return errors.Join(fmt.Errorf("data was not found in the stack"), err)
+		return -1, errors.Join(fmt.Errorf("data was not found in the stack"), err)
 	}
 
-	return nil
+	return index, nil
+}
+
+func (stack ListStack[T]) Len() int {
+	return stack.length
 }
 
 func NewListStack[T comparable]() Stack[T] {
 	return &ListStack[T]{}
+}
+
+func NewListStackFromArray[T comparable](arr []T) Stack[T] {
+	linkedList := list.NewDoublyLinkedListFromArray[T](arr)
+	return &ListStack[T]{
+		list:   linkedList,
+		length: linkedList.Len(),
+	}
 }
