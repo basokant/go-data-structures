@@ -2,7 +2,8 @@ package tree
 
 type TreeNode[T comparable] interface {
 	Data() T
-	Children() ([]TreeNode[T], error)
+	// the tree could have any number of children (not just 2)
+	Children() []TreeNode[T]
 	IsLeaf() bool
 }
 
@@ -15,12 +16,10 @@ const (
 	Levelorder
 )
 
-// String - Creating common behavior - give the type a String function
 func (o Order) String() string {
-	return [...]string{"Inorder", "Preorder", "Postorder", "Levelorder"}[o]
+	return []string{"Inorder", "Preorder", "Postorder", "Levelorder"}[o]
 }
 
-// EnumIndex - Creating common behavior - give the type a EnumIndex function
 func (o Order) EnumIndex() int {
 	return int(o)
 }
@@ -30,7 +29,7 @@ type Tree[T comparable] interface {
 	Insert(data T) error
 	Delete(data T) error
 	Search(data T) (TreeNode[T], error)
-	Traverse(op func(node TreeNode[T]), order Order)
+	Traverse(op func(node TreeNode[T]) bool, order Order)
 	Height() int
 	Level(node TreeNode[T]) (int, error)
 	Len() int
