@@ -34,4 +34,5 @@ type List[T comparable] interface {
 	Array() []T
 	String() string
 	Len() int
+	IsEmpty() bool
 }

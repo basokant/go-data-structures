@@ -3,16 +3,16 @@ package stack
 import "testing"
 
 func TestListStackEmpty(t *testing.T) {
-	emptyStack := NewArrayStack[int]()
+	emptyStack := NewListStack[int]()
 
-	if !emptyStack.Empty() {
+	if !emptyStack.IsEmpty() {
 		t.Error("Stack should be empty, was found populated.")
 	}
 
 	slice := []int{0, 1}
 	populatedStack := NewListStackFromArray[int](slice)
 
-	if populatedStack.Empty() {
+	if populatedStack.IsEmpty() {
 		t.Error("Stack should be populated, was found empty.")
 	}
 }

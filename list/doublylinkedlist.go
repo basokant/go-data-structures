@@ -140,6 +140,10 @@ func (list DoublyLinkedList[T]) Len() int {
 	return list.length
 }
 
+func (list DoublyLinkedList[T]) IsEmpty() bool {
+	return list.length == 0
+}
+
 func NewDoublyLinkedList[T comparable]() *DoublyLinkedList[T] {
 	return &DoublyLinkedList[T]{}
 }

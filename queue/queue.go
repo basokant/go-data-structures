@@ -6,5 +6,5 @@ type Queue[T comparable] interface {
 	Front() (T, error)
 	Search(data T) error
 	IsEmpty() bool
-	Size() int
+	Len() int
 }

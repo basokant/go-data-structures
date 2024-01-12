@@ -12,14 +12,14 @@ type ListStack[T comparable] struct {
 	length int
 }
 
-func (stack ListStack[T]) Empty() bool {
+func (stack ListStack[T]) IsEmpty() bool {
 	return stack.list == nil || stack.length == 0
 }
 
 func (stack ListStack[T]) Peek() (T, error) {
 	var top T
 
-	if stack.Empty() {
+	if stack.IsEmpty() {
 		return top, errors.New("stack empty, cannot peek the top value")
 	}
 
@@ -35,7 +35,7 @@ func (stack ListStack[T]) Peek() (T, error) {
 func (stack *ListStack[T]) Pop() (T, error) {
 	var top T
 
-	if stack.Empty() {
+	if stack.IsEmpty() {
 		return top, errors.New("stack empty, cannot peek the top value")
 	}
 
@@ -54,7 +54,7 @@ func (stack *ListStack[T]) Pop() (T, error) {
 }
 
 func (stack *ListStack[T]) Push(data T) error {
-	if stack.Empty() {
+	if stack.IsEmpty() {
 		stack.list = list.NewDoublyLinkedList[T]()
 	}
 
@@ -75,6 +75,10 @@ func (stack ListStack[T]) Search(data T) (int, error) {
 
 func (stack ListStack[T]) Len() int {
 	return stack.length
+}
+
+func (stack ListStack[T]) Empty() bool {
+	return stack.list.IsEmpty() || stack.length == 0
 }
 
 func NewListStack[T comparable]() Stack[T] {

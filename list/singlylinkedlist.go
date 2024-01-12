@@ -8,7 +8,7 @@ import (
 type SinglyLinkedList[T comparable] struct {
 	Head   *SinglyLinkedNode[T]
 	Tail   *SinglyLinkedNode[T]
-	Length int
+	length int
 }
 
 func (list *SinglyLinkedList[T]) Prepend(data T) error {
@@ -20,7 +20,7 @@ func (list *SinglyLinkedList[T]) Prepend(data T) error {
 		Data: T(data),
 	}
 
-	if list.Length == 0 {
+	if list.length == 0 {
 		list.Head = newNode
 		list.Tail = newNode
 	} else {
@@ -29,7 +29,7 @@ func (list *SinglyLinkedList[T]) Prepend(data T) error {
 		list.Head = newNode
 	}
 
-	list.Length += 1
+	list.length += 1
 	return nil
 }
 
@@ -42,7 +42,7 @@ func (list *SinglyLinkedList[T]) Append(data T) error {
 		Data: T(data),
 	}
 
-	if list.Length == 0 {
+	if list.length == 0 {
 		list.Head = newNode
 		list.Tail = newNode
 	} else {
@@ -50,7 +50,7 @@ func (list *SinglyLinkedList[T]) Append(data T) error {
 		temp.Next = newNode
 		list.Tail = newNode
 	}
-	list.Length += 1
+	list.length += 1
 	return nil
 }
 
@@ -60,7 +60,7 @@ func (list *SinglyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
 		return data, errors.New("cannot delete from a nil list")
 	}
 
-	if list.Length == 1 {
+	if list.length == 1 {
 		data = list.Head.Data
 		list.Head = nil
 		list.Tail = nil
@@ -122,7 +122,7 @@ func (list SinglyLinkedList[T]) Search(data T) (int, *SinglyLinkedNode[T], error
 func (list SinglyLinkedList[T]) Get(index int) (*SinglyLinkedNode[T], error) {
 	current := list.Head
 
-	if index >= list.Length {
+	if index >= list.length {
 		return nil, errors.New("index out of bounds of the List")
 	}
 
@@ -150,12 +150,16 @@ func (list SinglyLinkedList[T]) String() string {
 }
 
 func (list SinglyLinkedList[T]) Len() int {
-	return list.Length
+	return list.length
+}
+
+func (list SinglyLinkedList[T]) IsEmpty() bool {
+	return list.length == 0
 }
 
 func NewSinglyLinkedList[T comparable]() *SinglyLinkedList[T] {
 	return &SinglyLinkedList[T]{
-		Length: 0,
+		length: 0,
 		Head:   &SinglyLinkedNode[T]{},
 	}
 }

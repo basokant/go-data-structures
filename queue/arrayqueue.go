@@ -7,7 +7,7 @@ import (
 
 type ArrayQueue[T comparable] struct {
 	slice  []T
-	Length int
+	length int
 }
 
 // Dequeue implements Queue.
@@ -19,13 +19,13 @@ func (queue *ArrayQueue[T]) Dequeue() (T, error) {
 
 	top = queue.slice[0]
 	queue.slice = queue.slice[1:]
-	queue.Length--
+	queue.length--
 	return top, nil
 }
 
 // IsEmpty implements Queue.
 func (queue ArrayQueue[T]) IsEmpty() bool {
-	return queue.slice == nil || queue.Length == 0
+	return queue.slice == nil || queue.length == 0
 }
 
 // Enqueue implements Queue.
@@ -35,7 +35,7 @@ func (queue *ArrayQueue[T]) Enqueue(data T) error {
 	}
 
 	queue.slice = append(queue.slice, data)
-	queue.Length++
+	queue.length++
 	return nil
 }
 
@@ -65,10 +65,20 @@ func (queue ArrayQueue[T]) Search(data T) error {
 	return fmt.Errorf("data was not found in the queue")
 }
 
-func (queue ArrayQueue[T]) Size() int {
-	return queue.Length
+func (queue ArrayQueue[T]) Len() int {
+	return queue.length
 }
 
-func NewArrayQueue[T comparable]() Queue[T] {
+func New[T comparable]() Queue[T] {
 	return &ArrayQueue[T]{}
+}
+
+func NewFromArray[T comparable](slice []T) Queue[T] {
+	sliceCopy := make([]T, len(slice))
+	copy(sliceCopy, slice)
+
+	return &ArrayQueue[T]{
+		slice:  sliceCopy,
+		length: len(sliceCopy),
+	}
 }
