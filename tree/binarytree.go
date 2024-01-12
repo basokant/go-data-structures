@@ -73,18 +73,30 @@ func right[T constraints.Ordered](node TreeNode[T]) TreeNode[T] {
 	return node.Children()[1]
 }
 
-func inorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node TreeNode[T]) bool) {
+func inorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node TreeNode[T]) bool) bool {
 	left, right := left(node), right(node)
+	shouldContinue := true
 
 	if left != nil {
-		inorderTraversal(left, op)
+		shouldContinue = inorderTraversal(left, op)
+		if !shouldContinue {
+			return false
+		}
 	}
 
-	op(node)
+	shouldContinue = op(node)
+	if !shouldContinue {
+		return false
+	}
 
 	if right != nil {
-		inorderTraversal(right, op)
+		shouldContinue := inorderTraversal(right, op)
+		if !shouldContinue {
+			return false
+		}
 	}
+
+	return true
 }
 
 func preorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node TreeNode[T]) bool) bool {
@@ -113,18 +125,26 @@ func preorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node Tre
 	return true
 }
 
-func postorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node TreeNode[T]) bool) {
+func postorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node TreeNode[T]) bool) bool {
 	left, right := left(node), right(node)
+	shouldContinue := true
 
 	if left != nil {
-		postorderTraversal(left, op)
+		shouldContinue = postorderTraversal(left, op)
+		if !shouldContinue {
+			return false
+		}
 	}
 
 	if right != nil {
-		postorderTraversal(right, op)
+		shouldContinue = postorderTraversal(right, op)
+		if !shouldContinue {
+			return false
+		}
 	}
 
-	op(node)
+	shouldContinue = op(node)
+	return shouldContinue
 }
 
 func levelorderTraversal[T constraints.Ordered](node TreeNode[T], op func(node TreeNode[T]) bool) {
