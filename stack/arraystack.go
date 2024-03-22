@@ -46,7 +46,7 @@ func (stack *ArrayStack[T]) Push(data T) error {
 	return nil
 }
 
-func (stack ArrayStack[T]) Search(data T) (int, error) {
+func (stack ArrayStack[T]) IndexOf(data T) (int, error) {
 	if stack.IsEmpty() {
 		return -1, errors.New("stack empty, cannot search an empty stack")
 	}

@@ -60,7 +60,7 @@ func (queue ListQueue[T]) Search(data T) error {
 		return errors.New("queue empty, cannot search an empty queue")
 	}
 
-	_, _, err := queue.list.Search(data)
+	_, err := queue.list.IndexOf(data)
 	if err != nil {
 		return fmt.Errorf("data was not found in the queue")
 	}

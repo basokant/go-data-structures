@@ -2,24 +2,22 @@ package binarytree
 
 import (
 	"fmt"
-
-	"github.com/basokant/go-data-structures/tree"
 )
 
-func (bt BinaryTree[T]) Search(data T) (tree.TreeNode[T], error) {
+func (bt BinaryTree[T]) Search(data T) (*BinaryTreeNode[T], error) {
 	return bt.SearchWithOrder(data, Preorder)
 }
 
-func (bt BinaryTree[T]) SearchWithOrder(data T, order Order) (tree.TreeNode[T], error) {
-	var foundNode tree.TreeNode[T]
+func (bt BinaryTree[T]) SearchWithOrder(data T, order Order) (*BinaryTreeNode[T], error) {
+	var foundNode *BinaryTreeNode[T]
 	var empty *BinaryTreeNode[T]
 
 	if bt.root == empty {
-		bt.root = &BinaryTreeNode[T]{data: data, children: []*BinaryTreeNode[T]{}}
+		bt.root = &BinaryTreeNode[T]{data: data}
 	}
 
-	bt.Traverse(func(node tree.TreeNode[T]) bool {
-		left, right := Left(node), Right(node)
+	bt.Traverse(func(node *BinaryTreeNode[T]) bool {
+		left, right := node.Left, node.Right
 
 		if left.Data() == data {
 			foundNode = left

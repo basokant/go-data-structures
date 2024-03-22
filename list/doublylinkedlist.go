@@ -92,18 +92,18 @@ func (list *DoublyLinkedList[T]) Delete(node *DoublyLinkedNode[T]) (T, error) {
 	return data, errors.New("node with data was not found in the List")
 }
 
-func (list DoublyLinkedList[T]) Search(data T) (int, *DoublyLinkedNode[T], error) {
+func (list DoublyLinkedList[T]) IndexOf(data T) (int, error) {
 	current := list.Head
 	index := 0
 
 	for current != nil {
 		if current.Data == data {
-			return index, current, nil
+			return index, nil
 		}
 		index++
 		current = current.Next
 	}
-	return -1, nil, errors.New("node with data was not found in the List")
+	return -1, errors.New("node with data was not found in the List")
 }
 
 func (list DoublyLinkedList[T]) Get(index int) (*DoublyLinkedNode[T], error) {

@@ -105,18 +105,18 @@ func (list *SinglyLinkedList[T]) Delete(node *SinglyLinkedNode[T]) (T, error) {
 	return data, errors.New("node with data was not found in the List")
 }
 
-func (list SinglyLinkedList[T]) Search(data T) (int, *SinglyLinkedNode[T], error) {
+func (list SinglyLinkedList[T]) IndexOf(data T) (int, error) {
 	current := list.Head
 	index := 0
 
 	for current != nil {
 		if current.Data == data {
-			return index, current, nil
+			return index, nil
 		}
 		index++
 		current = current.Next
 	}
-	return -1, nil, errors.New("node with data was not found in the List")
+	return -1, errors.New("node with data was not found in the List")
 }
 
 func (list SinglyLinkedList[T]) Get(index int) (*SinglyLinkedNode[T], error) {

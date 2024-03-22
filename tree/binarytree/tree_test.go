@@ -3,8 +3,6 @@ package binarytree
 import (
 	"reflect"
 	"testing"
-
-	"github.com/basokant/go-data-structures/tree"
 )
 
 func newSingleNodeBinaryTree() *BinaryTree[int] {
@@ -21,7 +19,7 @@ func newFullBinaryTree() *BinaryTree[int] {
 
 	root := NewBinaryTreeNode[int](1, left, right)
 
-	binaryTree := &BinaryTree[int]{root: root.(*BinaryTreeNode[int])}
+	binaryTree := &BinaryTree[int]{root: root}
 	return binaryTree
 }
 
@@ -34,7 +32,7 @@ func TestBinaryTreeRoot(t *testing.T) {
 	}
 
 	tests := []struct {
-		tree TraversableTree[int]
+		tree *BinaryTree[int]
 		name string
 		want int
 	}{
@@ -62,13 +60,35 @@ func TestBinaryTreeRoot(t *testing.T) {
 	}
 
 	t.Run("empty binary tree", func(t *testing.T) {
-		var want tree.TreeNode[int]
-
 		tree := &BinaryTree[int]{}
 		got, _ := tree.Root()
 
-		if want != got {
-			t.Fatalf("expected: %v, got: %v", want, got)
+		if got != nil {
+			t.Fatalf("expected: %v, got: %v", nil, got)
 		}
 	})
+}
+
+func TestBinaryTreeHeight(t *testing.T) {
+	tests := []struct {
+		tree *BinaryTree[int]
+		name string
+		want int
+	}{
+		{
+			name: "empty tree",
+			tree: &BinaryTree[int]{},
+			want: 0,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.tree.Height()
+
+			if !reflect.DeepEqual(tc.want, got) {
+				t.Fatalf("expected: %v, got: %v", tc.want, got)
+			}
+		})
+	}
 }

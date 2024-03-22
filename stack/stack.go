@@ -4,7 +4,7 @@ type Stack[T comparable] interface {
 	Push(data T) error
 	Pop() (T, error)
 	Peek() (T, error)
-	Search(data T) (int, error)
+	IndexOf(data T) (int, error)
 	IsEmpty() bool
 	Len() int
 }

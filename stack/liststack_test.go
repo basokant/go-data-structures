@@ -93,7 +93,7 @@ func TestListStackPush(t *testing.T) {
 func TestListStackSearch(t *testing.T) {
 	st := NewListStack[int]()
 
-	index, err := st.Search(0)
+	index, err := st.IndexOf(0)
 
 	if err == nil || index >= 0 {
 		t.Error("Empty stack should not be searchable.")
@@ -103,7 +103,7 @@ func TestListStackSearch(t *testing.T) {
 	st = NewListStackFromArray[int](slice)
 
 	for i, v := range slice {
-		index, err = st.Search(v)
+		index, err = st.IndexOf(v)
 
 		if err != nil {
 			t.Errorf("Error occured while searching stack for value %q", v)

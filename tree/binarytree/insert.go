@@ -1,10 +1,6 @@
 package binarytree
 
-import (
-	"fmt"
-
-	"github.com/basokant/go-data-structures/tree"
-)
+import "fmt"
 
 func (bt *BinaryTree[T]) Insert(data T) error {
 	inserted := false
@@ -12,26 +8,26 @@ func (bt *BinaryTree[T]) Insert(data T) error {
 	var empty *BinaryTreeNode[T]
 
 	if bt.root == empty {
-		bt.root = &BinaryTreeNode[T]{data: data, children: []*BinaryTreeNode[T]{}}
+		bt.root = &BinaryTreeNode[T]{data: data}
 		inserted = true
 		return nil
 	}
 
-	newNode := NewBinaryTreeNode[T](data, nil, nil)
-	bt.Traverse(func(node tree.TreeNode[T]) bool {
+	newNode := &BinaryTreeNode[T]{data, nil, nil}
+	bt.Traverse(func(node *BinaryTreeNode[T]) bool {
 		if inserted {
 			return false
 		}
 
-		left, right := Left(node), Right(node)
+		left, right := node.Left, node.Right
 		if left != nil && right != nil {
 			return true
 		}
 
 		if left == nil {
-			node.SetChildren([]tree.TreeNode[T]{newNode, right})
+			node.Left = newNode
 		} else if right == nil {
-			node.SetChildren([]tree.TreeNode[T]{newNode, right})
+			node.Right = newNode
 		}
 
 		inserted = true

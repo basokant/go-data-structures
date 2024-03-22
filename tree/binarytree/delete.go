@@ -1,10 +1,6 @@
 package binarytree
 
-import (
-	"errors"
-
-	"github.com/basokant/go-data-structures/tree"
-)
+import "errors"
 
 func (bt *BinaryTree[T]) Delete(data T) error {
 	deleted := false
@@ -14,7 +10,7 @@ func (bt *BinaryTree[T]) Delete(data T) error {
 	}
 
 	if bt.root.data == data {
-		r, l := bt.root.Right(), bt.root.Left()
+		r, l := bt.root.Right, bt.root.Left
 		bt.root = nil
 
 		switch true {
@@ -27,10 +23,10 @@ func (bt *BinaryTree[T]) Delete(data T) error {
 		}
 	}
 
-	var parentOfLastNode tree.TreeNode[T]
+	var parentOfLastNode *BinaryTreeNode[T]
 	direction := "right"
 	lastNode, _ := bt.Root()
-	left, right := Left(lastNode), Right(lastNode)
+	left, right := lastNode.Left, lastNode.Right
 	for left == nil || right == nil {
 		if right != nil {
 			parentOfLastNode, lastNode = lastNode, right
@@ -39,20 +35,18 @@ func (bt *BinaryTree[T]) Delete(data T) error {
 			parentOfLastNode, lastNode = lastNode, left
 			direction = "left"
 		}
-		left, right = Left(lastNode), Right(lastNode)
+		left, right = lastNode.Left, lastNode.Right
 	}
 
 	switch direction {
 	case "right":
-		left = Left(parentOfLastNode)
-		parentOfLastNode.SetChildren([]tree.TreeNode[T]{left, nil})
+		parentOfLastNode.Right = nil
 	case "left":
-		right = Right(parentOfLastNode)
-		parentOfLastNode.SetChildren([]tree.TreeNode[T]{nil, right})
+		parentOfLastNode.Left = nil
 	}
 
-	bt.Traverse(func(node tree.TreeNode[T]) bool {
-		left, right := Left(node), Right(node)
+	bt.Traverse(func(node *BinaryTreeNode[T]) bool {
+		left, right := node.Left, node.Right
 		if deleted {
 			return false
 		}

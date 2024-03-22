@@ -2,7 +2,6 @@ package binarytree
 
 import (
 	"github.com/basokant/go-data-structures/queue"
-	"github.com/basokant/go-data-structures/tree"
 	"golang.org/x/exp/constraints"
 )
 
@@ -23,13 +22,8 @@ func (o Order) EnumIndex() int {
 	return int(o)
 }
 
-type TraversableTree[T comparable] interface {
-	tree.Tree[T]
-	Traverse(op func(node tree.TreeNode[T]) bool, order Order)
-}
-
-func inorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(node tree.TreeNode[T]) bool) bool {
-	left, right := Left(node), Right(node)
+func inorderTraversal[T constraints.Ordered](node *BinaryTreeNode[T], op func(node *BinaryTreeNode[T]) bool) bool {
+	left, right := node.Left, node.Right
 	shouldContinue := true
 
 	if left != nil {
@@ -54,8 +48,8 @@ func inorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(node
 	return true
 }
 
-func preorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(node tree.TreeNode[T]) bool) bool {
-	left, right := Left(node), Right(node)
+func preorderTraversal[T constraints.Ordered](node *BinaryTreeNode[T], op func(node *BinaryTreeNode[T]) bool) bool {
+	left, right := node.Left, node.Right
 	shouldContinue := op(node)
 
 	if !shouldContinue {
@@ -79,8 +73,8 @@ func preorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(nod
 	return true
 }
 
-func postorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(node tree.TreeNode[T]) bool) bool {
-	left, right := Left(node), Right(node)
+func postorderTraversal[T constraints.Ordered](node *BinaryTreeNode[T], op func(node *BinaryTreeNode[T]) bool) bool {
+	left, right := node.Left, node.Right
 	shouldContinue := true
 
 	if left != nil {
@@ -101,12 +95,12 @@ func postorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(no
 	return shouldContinue
 }
 
-func levelorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(node tree.TreeNode[T]) bool) {
+func levelorderTraversal[T constraints.Ordered](node *BinaryTreeNode[T], op func(node *BinaryTreeNode[T]) bool) {
 	if node == nil {
 		return
 	}
 
-	queue := queue.New[tree.TreeNode[T]]()
+	queue := queue.New[*BinaryTreeNode[T]]()
 	queue.Enqueue(node)
 
 	for !queue.IsEmpty() {
@@ -115,7 +109,7 @@ func levelorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(n
 			return
 		}
 
-		left, right := Left(node), Right(node)
+		left, right := node.Left, node.Right
 		if left != nil {
 			queue.Enqueue(left)
 		}
@@ -126,7 +120,7 @@ func levelorderTraversal[T constraints.Ordered](node tree.TreeNode[T], op func(n
 	}
 }
 
-func (tree BinaryTree[T]) Traverse(op func(node tree.TreeNode[T]) bool, order Order) {
+func (tree BinaryTree[T]) Traverse(op func(node *BinaryTreeNode[T]) bool, order Order) {
 	switch order {
 	case Preorder:
 		preorderTraversal(tree.root, op)
