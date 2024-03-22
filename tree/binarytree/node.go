@@ -61,14 +61,18 @@ func (node BinaryTreeNode[T]) IsLeaf() bool {
 }
 
 func Left[T constraints.Ordered](node tree.TreeNode[T]) tree.TreeNode[T] {
-	if node.Children() == nil {
+	if node == nil ||
+		node.Children() == nil ||
+		len(node.Children()) == 0 {
 		return nil
 	}
 	return node.Children()[0]
 }
 
 func Right[T constraints.Ordered](node tree.TreeNode[T]) tree.TreeNode[T] {
-	if node.Children() == nil {
+	if node == nil ||
+		node.Children() == nil ||
+		len(node.Children()) == 0 {
 		return nil
 	}
 	return node.Children()[1]
